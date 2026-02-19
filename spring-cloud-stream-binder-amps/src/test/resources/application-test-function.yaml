@@ -1,0 +1,21 @@
+spring:
+  cloud:
+    stream:
+      amps:
+        binder:
+          name: function
+      bindings:
+        output1:
+          destination: /topic1
+        input1-in-0:
+          destination: /topic1/queue
+        output2:
+          destination: /topic2
+        input2output3-in-0:
+          destination: /topic2/queue
+        input2output3-out-0:
+          destination: /topic3
+        input3-in-0:
+          destination: /topic3/queue
+    function:
+      definition: input1;input2output3;input3

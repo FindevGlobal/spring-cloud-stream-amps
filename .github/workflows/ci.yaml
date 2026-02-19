@@ -1,0 +1,55 @@
+name: Build & Test
+
+on:
+  push:
+    branches: ['**']   # run on every branch
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        java: ['8', '11', '17', '21']  # JDK versions to validate
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'        # Eclipse Temurin (Adoptium)
+          java-version: ${{ matrix.java }}
+          cache: 'maven'                 # Maven dependency cache scoped per JDK
+          # These inputs automatically configure settings.xml for the runner
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Show Java version
+        run: |
+          echo "Using JAVA_HOME=$JAVA_HOME"
+          java -version
+          mvn -v
+
+      - name: Build & test with Maven
+        run: mvn -B -ntp clean verify
+        env:
+          MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Upload test reports (JDK ${{ matrix.java }})
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports-jdk${{ matrix.java }}
+          path: |
+            **/target/surefire-reports/**
+            **/target/failsafe-reports/**
+          if-no-files-found: warn

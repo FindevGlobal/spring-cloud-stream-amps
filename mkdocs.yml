@@ -1,0 +1,104 @@
+site_name: Spring Cloud Stream Binder for AMPS
+site_description: Reference documentation for the Spring Cloud Stream Binder for AMPS (Advanced Message Processing System)
+site_url: https://findevglobal.github.io/spring-cloud-stream-amps/
+repo_url: https://github.com/findevglobal/spring-cloud-stream-amps
+repo_name: findevglobal/spring-cloud-stream-amps
+
+theme:
+  name: material
+  language: en
+  palette:
+    - scheme: default
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: green
+      accent: light green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+    - content.code.copy
+    - content.code.annotate
+    - toc.follow
+
+plugins:
+  - search
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 4
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+extra:
+  version:
+    provider: mike
+    default: latest
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/findevglobal/spring-cloud-stream-amps
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Overview: getting-started/overview.md
+      - Quick Start: getting-started/quickstart.md
+      - Programming Model: getting-started/programming-model.md
+  - Reference:
+      - AMPS Binder:
+          - reference/binder/index.md
+          - Configuration Properties: reference/binder/configuration.md
+          - Consumer Properties: reference/binder/consumer-properties.md
+          - Producer Properties: reference/binder/producer-properties.md
+      - Connection Management: reference/connection.md
+      - Message Headers: reference/headers.md
+      - Provisioning: reference/provisioning.md
+      - Error Handling: reference/error-handling.md
+  - Distributed Tracing:
+      - Tracing Overview: tracing/index.md
+      - Sleuth Integration: tracing/sleuth.md
+      - OpenTracing Integration: tracing/opentracing.md
+  - Advanced:
+      - SOW Queries: advanced/sow.md
+      - Bookmarks: advanced/bookmarks.md
+      - Multi-Binder: advanced/multi-binder.md
+      - Message Serialization: advanced/serialization.md
+      - Custom Header Propagation: advanced/headers.md
+      - Authentication: advanced/authentication.md
+      - Concurrent Consumers: advanced/concurrency.md
+  - Appendix:
+      - Configuration Properties Reference: appendix/configuration-properties.md

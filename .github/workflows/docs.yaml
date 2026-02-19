@@ -1,0 +1,119 @@
+# ──────────────────────────────────────────────────────────────
+# Publish versioned MkDocs to GitHub Pages on every Release
+# ──────────────────────────────────────────────────────────────
+# Tag → version alias mapping (SemVer from the tag):
+#   v1.1.0 on 2025.0.x  → "1.1.0"  (latest)
+#   v1.0.0 on 2025.0.x  → "1.0.0"
+#   v0.9.5 on 2024.0.x  → "0.9.5"
+#   v0.9.0 on 2024.0.x  → "0.9.0"
+#
+# All versions live side-by-side under gh-pages via `mike`.
+# The version selector in the Material theme lets readers switch.
+# The most recent release is set as the default.
+# ──────────────────────────────────────────────────────────────
+
+name: Publish Docs
+
+on:
+  # Trigger when a GitHub Release is published (the "release button")
+  release:
+    types: [published]
+
+  # Also allow manual dispatch for ad-hoc rebuilds
+  workflow_dispatch:
+    inputs:
+      version_alias:
+        description: "Version alias to deploy (e.g. 1.1.0, dev)"
+        required: false
+      set_default:
+        description: "Set this version as the default?"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write # mike pushes to gh-pages branch
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ────────────────────────────────────────
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # mike needs full history of gh-pages
+
+      # ── 2. Set up Python ───────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # ── 3. Install dependencies ────────────────────────────
+      - name: Install MkDocs & plugins
+        run: |
+          pip install --upgrade pip
+          pip install -r docs/requirements.txt
+
+      # ── 4. Configure Git (required by mike) ────────────────
+      - name: Configure Git user
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # ── 5. Resolve version alias from tag ──────────────────
+      - name: Resolve version alias
+        id: version
+        run: |
+          # Manual override via workflow_dispatch
+          if [[ -n "${{ github.event.inputs.version_alias }}" ]]; then
+            ALIAS="${{ github.event.inputs.version_alias }}"
+            SET_DEFAULT="${{ github.event.inputs.set_default }}"
+            TITLE="${ALIAS}"
+          else
+            # Extract version from the release tag (strip leading 'v' if present)
+            TAG="${{ github.event.release.tag_name }}"
+            ALIAS="${TAG#v}"
+
+            # Derive the release-train label from the target branch
+            TARGET="${{ github.event.release.target_commitish }}"
+            case "${TARGET}" in
+              *.x)   TRAIN="${TARGET%.x}" ;;   # "2025.0.x" → "2025.0"
+              main)  TRAIN="dev" ;;
+              *)     TRAIN="${TARGET}" ;;
+            esac
+
+            TITLE="${ALIAS} (${TRAIN})"
+            SET_DEFAULT="true"
+
+            # Pre-releases should not become the default
+            if [[ "${{ github.event.release.prerelease }}" == "true" ]]; then
+              SET_DEFAULT="false"
+            fi
+          fi
+
+          echo "alias=${ALIAS}"             >> "$GITHUB_OUTPUT"
+          echo "title=${TITLE}"             >> "$GITHUB_OUTPUT"
+          echo "set_default=${SET_DEFAULT}" >> "$GITHUB_OUTPUT"
+
+          echo "📄 Deploying docs version: ${ALIAS}  title: ${TITLE}  default: ${SET_DEFAULT}"
+
+      # ── 6. Deploy with mike ────────────────────────────────
+      - name: Deploy docs (mike)
+        run: |
+          ALIAS="${{ steps.version.outputs.alias }}"
+          TITLE="${{ steps.version.outputs.title }}"
+          SET_DEFAULT="${{ steps.version.outputs.set_default }}"
+
+          # Deploy this version (--update-aliases overwrites if alias exists)
+          mike deploy --update-aliases "${ALIAS}" --title "${TITLE}" --push
+
+          # Optionally set as the default redirect (/)
+          if [[ "${SET_DEFAULT}" == "true" ]]; then
+            mike set-default "${ALIAS}" --push
+          fi
+
+      # ── 7. List published versions (informational) ─────────
+      - name: List deployed versions
+        run: mike list

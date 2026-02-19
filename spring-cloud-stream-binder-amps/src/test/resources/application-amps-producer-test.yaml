@@ -1,0 +1,13 @@
+spring.cloud.stream:
+  amps:
+    binder:
+      brokers: localhost
+    bindings:
+      output3:
+        producer:
+          ackType: Persisted
+          timeout: 100s
+          expiration: 200s
+  bindings:
+    output3:
+      destination: topic3

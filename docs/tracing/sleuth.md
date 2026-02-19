@@ -1,0 +1,98 @@
+# Spring Cloud Sleuth Integration
+
+The AMPS tracer integrates with [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) for distributed tracing using B3 propagation.
+
+## Auto-Configuration
+
+`SleuthTracingAmpsConfiguration` is activated when:
+
+1. Spring Cloud Sleuth's `Tracer` bean is present on the classpath.
+2. The property `spring.sleuth.amps.enabled` is `true` (default).
+
+It creates a `SleuthTracer` bean implementing the `AmpsTracer` interface.
+
+## Setup
+
+Add both dependencies:
+
+```xml
+<dependency>
+    <groupId>com.findevglobal.cloud</groupId>
+    <artifactId>spring-cloud-stream-tracer-amps</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-sleuth</artifactId>
+</dependency>
+```
+
+No additional configuration is needed. The tracer auto-configures itself.
+
+## Disabling
+
+To disable Sleuth integration for AMPS while keeping Sleuth active for other components:
+
+```yaml
+spring:
+  sleuth:
+    amps:
+      enabled: false
+```
+
+## Propagation Format
+
+The Sleuth integration uses **B3 propagation** headers:
+
+| Header              | Description                        |
+| ------------------- | ---------------------------------- |
+| `X-B3-TraceId`      | 128-bit or 64-bit trace identifier |
+| `X-B3-SpanId`       | 64-bit span identifier             |
+| `X-B3-ParentSpanId` | Parent span identifier             |
+| `X-B3-Sampled`      | Sampling decision (`1` or `0`)     |
+
+These headers are injected into the `ampsMessageHeaderParams` map and encoded into the AMPS correlation ID.
+
+## Span Details
+
+The `SleuthTracer` creates spans using Sleuth's `Tracer` and `Propagator` APIs:
+
+### Consumer Span
+
+```
+Span Name: amps.consume
+Kind: CONSUMER
+Tags:
+  amps.topic: <topic-name>
+```
+
+### Producer Span
+
+```
+Span Name: amps.produce
+Kind: PRODUCER
+Tags:
+  amps.topic: <topic-name>
+```
+
+## Documented Spans
+
+The module defines documented spans in the `AmpsSpan` enum for Sleuth's span documentation:
+
+| Span Name       | Kind       | Tag          |
+| --------------- | ---------- | ------------ |
+| `amps.consumer` | `CONSUMER` | `amps.topic` |
+| `amps.producer` | `PRODUCER` | `amps.topic` |
+
+## Example Trace Flow
+
+```
+Service A (Producer)                    Service B (Consumer)
+┌─────────────────────┐                ┌─────────────────────┐
+│ amps.produce span   │──── AMPS ────→│ amps.consume span   │
+│ traceId: abc123     │   message      │ traceId: abc123     │
+│ spanId:  def456     │   with B3      │ parentSpanId: def456│
+│ topic:   orders     │   headers      │ topic:   orders     │
+└─────────────────────┘                └─────────────────────┘
+```
