@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    stream:
+      amps:
+        binder:
+          name: annotation
+      bindings:
+        output1:
+          destination: /topic1
+        input1:
+          destination: /topic1/queue
+        output2:
+          destination: /topic2
+        input2:
+          destination: /topic2/queue

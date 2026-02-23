@@ -1,0 +1,29 @@
+spring.cloud.stream:
+  amps:
+    binder:
+      brokers: localhost
+    bindings:
+      input1:
+        consumer:
+          snapshot: true
+          rate: 10
+          withTimestamp: true
+          ackBatchSize: 100
+          ackTimeout: 100s
+          heartbeat: 200s
+          timeout: 300s
+          bookmarkType: MOST_RECENT
+          filter: filter
+          options:
+            - op1
+            - op2
+          maxBacklog: 200
+          batchSize: 50
+      input2:
+        consumer:
+          bookmarkProviderBeanName: customBookMarkProvider
+  bindings:
+    input1:
+      destination: topic1
+    input2:
+      destination: topic2

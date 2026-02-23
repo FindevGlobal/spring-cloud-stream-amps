@@ -1,0 +1,2 @@
+com.findevglobal.cloud.stream.binder.amps.connection.AmpsConnectionFactoryProvider
+com.findevglobal.cloud.stream.binder.amps.connection.BookmarkProvider
