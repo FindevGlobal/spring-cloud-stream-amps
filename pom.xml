@@ -4,10 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.findevglobal</groupId>
-    <artifactId>spring-cloud-stream-amps</artifactId>
-    <packaging>pom</packaging>
-    <version>${revision}</version>
+    <name>Spring Cloud Stream AMPS</name>
+    <description>Official Open Source library by FinDev team.</description>
+    <url>https://fin.dev</url>
 
     <licenses>
         <license>
@@ -26,13 +25,23 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git:git://github.com/FindevGlobal/spring-cloud-stream-amps.git</connection>
+        <developerConnection>scm:git:ssh://github.com:FindevGlobal/spring-cloud-stream-amps.git</developerConnection>
+        <url>https://github.com/FindevGlobal/spring-cloud-stream-amps</url>
+    </scm>
+
+    <groupId>com.findevglobal</groupId>
+    <artifactId>spring-cloud-stream-amps</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
     <modules>
         <module>spring-cloud-stream-binder-amps</module>
         <module>spring-cloud-stream-tracer-amps</module>
     </modules>
 
     <properties>
-        <revision>1.0.0</revision>
         <spring-cloud.version>2021.0.8</spring-cloud.version>
         <spring.version>2.7.18</spring.version>
     </properties>
@@ -42,7 +51,7 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.6.0</version>
+                <version>0.10.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
