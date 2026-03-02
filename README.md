@@ -28,7 +28,7 @@ Add the binder dependency:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-binder-amps</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 

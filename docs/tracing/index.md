@@ -52,7 +52,7 @@ Add the tracer module to your project:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-tracer-amps</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
