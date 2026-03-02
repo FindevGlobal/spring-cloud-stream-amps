@@ -1,7 +1,5 @@
 package com.findevglobal.cloud.stream.binder.amps;
 
-import com.findevglobal.cloud.stream.binder.amps.app.Consumer;
-import com.findevglobal.cloud.stream.binder.amps.app.Producer;
 import com.findevglobal.cloud.stream.binder.amps.app.TestAmpsConnectionFactoryProvider;
 import com.findevglobal.cloud.stream.binder.amps.app.TestApp;
 import com.findevglobal.cloud.stream.binder.amps.properties.AmpsBinderConfigurationProperties;
@@ -10,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -19,7 +16,6 @@ import java.time.Duration;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApp.class)
 @ActiveProfiles("amps-binder-test")
-@EnableBinding({Producer.class, Consumer.class})
 public class AmpsBinderPropertiesTest {
     @Autowired
     private TestAmpsConnectionFactoryProvider ampsConnectionFactoryProvider;

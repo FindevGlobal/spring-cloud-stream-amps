@@ -70,9 +70,9 @@ This appendix provides a comprehensive flat reference of all configuration prope
 
 ## Tracer Properties
 
-| Property                     | Type      | Default | Description                                         |
-| ---------------------------- | --------- | ------- | --------------------------------------------------- |
-| `spring.sleuth.amps.enabled` | `boolean` | `true`  | Enable/disable Sleuth integration for AMPS tracing. |
+| Property                         | Type      | Default | Description                                             |
+|----------------------------------| --------- | ------- |---------------------------------------------------------|
+| `spring.micrometer.amps.enabled` | `boolean` | `true`  | Enable/disable Micrometer integration for AMPS tracing. |
 
 ---
 

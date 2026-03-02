@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ['8', '11', '17', '21']  # JDK versions to validate
+        java: ['17', '21', '25']  # JDK versions to validate
 
     steps:
       - name: Checkout repository

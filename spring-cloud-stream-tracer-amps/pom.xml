@@ -4,6 +4,33 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Spring Cloud Stream Tracer AMPS</name>
+    <description>Official Open Source library by FinDev team.</description>
+    <url>https://fin.dev</url>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>findev-tech</id>
+            <name>FinDev Team</name>
+            <email>robot@fin.dev</email>
+            <organization>FinDev</organization>
+            <organizationUrl>https://fin.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/FindevGlobal/spring-cloud-stream-amps.git</connection>
+        <developerConnection>scm:git:ssh://github.com:FindevGlobal/spring-cloud-stream-amps.git</developerConnection>
+        <url>https://github.com/FindevGlobal/spring-cloud-stream-amps</url>
+    </scm>
+
     <parent>
         <groupId>com.findevglobal</groupId>
         <artifactId>spring-cloud-stream-amps</artifactId>
@@ -13,10 +40,11 @@
     <artifactId>spring-cloud-stream-tracer-amps</artifactId>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <opentracing.version>0.33.0</opentracing.version>
+        <micrometer.version>1.0.12</micrometer.version>
     </properties>
 
     <dependencyManagement>
@@ -38,8 +66,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-tracing-bridge-brave</artifactId>
+            <version>${micrometer.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>

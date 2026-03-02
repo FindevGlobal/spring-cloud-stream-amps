@@ -90,7 +90,7 @@ nav:
       - Error Handling: reference/error-handling.md
   - Distributed Tracing:
       - Tracing Overview: tracing/index.md
-      - Sleuth Integration: tracing/sleuth.md
+      - Micrometer Integration: tracing/micrometer.md
       - OpenTracing Integration: tracing/opentracing.md
   - Advanced:
       - SOW Queries: advanced/sow.md

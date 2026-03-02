@@ -4,7 +4,6 @@ import com.crankuptheamps.client.Client;
 import com.crankuptheamps.client.Command;
 import com.crankuptheamps.client.Message;
 import com.crankuptheamps.client.exception.AMPSException;
-import com.findevglobal.cloud.stream.binder.amps.app.Consumer;
 import com.findevglobal.cloud.stream.binder.amps.app.TestAmpsConnectionFactoryProvider;
 import com.findevglobal.cloud.stream.binder.amps.app.TestApp;
 import com.findevglobal.cloud.stream.binder.amps.connection.AmpsConnection;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.testcontainers.shaded.org.apache.commons.lang3.tuple.Pair;
@@ -28,7 +26,6 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApp.class)
 @ActiveProfiles("amps-consumer-test")
-@EnableBinding({Consumer.class})
 public class AmpsConsumerPropertiesTest {
     @Autowired
     private TestAmpsConnectionFactoryProvider ampsConnectionFactoryProvider;
