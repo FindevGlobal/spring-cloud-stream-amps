@@ -6,19 +6,19 @@ This binder allows Spring Cloud Stream applications to use AMPS as their messagi
 
 ## Modules
 
-| Module                            | Description                                                  |
-| --------------------------------- | ------------------------------------------------------------ |
-| `spring-cloud-stream-binder-amps` | Core binder — AMPS integration with Spring Cloud Stream      |
-| `spring-cloud-stream-tracer-amps` | Distributed tracing (Sleuth / OpenTracing) for AMPS messages |
+| Module                            | Description                                                      |
+| --------------------------------- |------------------------------------------------------------------|
+| `spring-cloud-stream-binder-amps` | Core binder — AMPS integration with Spring Cloud Stream          |
+| `spring-cloud-stream-tracer-amps` | Distributed tracing (Micrometer / OpenTracing) for AMPS messages |
 
 ## Compatibility
 
-| Dependency   | Version            |
-| ------------ | ------------------ |
-| Spring Boot  | 2.7.x              |
-| Spring Cloud | 2021.0.x (Jubilee) |
-| AMPS Client  | 5.3.4.0            |
-| Java         | 8+                 |
+| Dependency   | Version                |
+| ------------ |------------------------|
+| Spring Boot  | 3.5.x                  |
+| Spring Cloud | 2025.0.x (Northfields) |
+| AMPS Client  | 5.3.4.0                |
+| Java         | 17+                    |
 
 ## Quick Start
 
@@ -28,7 +28,7 @@ Add the binder dependency:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-binder-amps</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -75,7 +75,7 @@ public class MyApp {
 - **Content filtering** — Apply AMPS filter expressions to subscriptions.
 - **HA Client** — Automatic reconnection and failover across multiple AMPS instances.
 - **Multi-binder support** — Multiple named AMPS binders in a single application.
-- **Distributed tracing** — Transparent trace propagation via Spring Cloud Sleuth or OpenTracing.
+- **Distributed tracing** — Transparent trace propagation via Micrometer or OpenTracing.
 - **Custom header propagation** — Encode arbitrary metadata into AMPS correlation IDs.
 - **Concurrent consumers** — Scale with multiple parallel AMPS connections per binding.
 - **Message serialization** — JSON (default), Avro (JSON/binary), XML, or custom converters.
@@ -90,7 +90,7 @@ Full documentation is available [spring-cloud-stream-amps](https://findevglobal.
 - **[Getting Started](docs/getting-started/overview.md)** — Overview, quick start, and programming model
 - **[Reference](docs/reference/binder/configuration.md)** — Binder, consumer, and producer configuration properties
 - **[Connection Management](docs/reference/connection.md)** — HA client, stores, and header converter
-- **[Distributed Tracing](docs/tracing/index.md)** — Sleuth and OpenTracing integration
+- **[Distributed Tracing](docs/tracing/index.md)** — Micrometer and OpenTracing integration
 - **[Advanced Topics](docs/advanced/sow.md)** — SOW queries, bookmarks, multi-binder, serialization, authentication
 - **[Appendix](docs/appendix/configuration-properties.md)** — All configuration properties reference
 

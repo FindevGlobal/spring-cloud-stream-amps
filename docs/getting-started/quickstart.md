@@ -4,7 +4,7 @@ This guide walks you through building a minimal Spring Cloud Stream application 
 
 ## Prerequisites
 
-- Java 8 or later
+- Java 17 or later
 - An AMPS server instance (v5.x) running and accessible
 - Maven 3.6+
 
@@ -16,7 +16,7 @@ The simplest way to get started is to add the AMPS binder directly, which includ
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-binder-amps</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ And, if using Spring Cloud BOM:
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
-            <version>2021.0.8</version>
+            <version>2025.0.1</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>

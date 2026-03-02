@@ -1,43 +1,46 @@
-spring.cloud.stream:
-  default-binder: amps1
-  bindings:
-    input1:
-      destination: topic1
-      binder: amps1
-    output1:
-      destination: topic1
-      binder: amps2
-  binders:
-    amps1:
-      type: amps
-      environment:
-        spring.cloud.stream.amps.binder:
-          name: all-properties
-          brokers:
-            - tcp://instance-1:50000/json
-            - tcp://instance-2:50000/json
-          defaultBrokerMessageType: binary
-          defaultBrokerTransport: https
-          defaultBrokerPort: 10000
-          publishStoreSize: 2048
-          maxReconnectTime: 100s
-          heartBeatInterval: 200s
-          publishMessageStoreProviderBeanName: storeProvider
-          subscriptionBookmarkStoreProviderBeanName: bookmarkProvider
-          publishAmpsHeader: true
-          authenticatorBeanName: authBean
-    amps2:
-      type: amps
-      environment:
-        spring.cloud.stream.amps.binder:
-          name: connection-url
-          brokers:
-            - tcp://instance-1:50000/json
-            - instance-2:50000/json
-            - tcp://instance-1/json
-            - tcp://instance-2:50000
-            - instance-1:50000
-            - instance-2
-          defaultBrokerMessageType: binary
-          defaultBrokerTransport: https
-          defaultBrokerPort: 10000
+spring.cloud:
+  stream:
+    default-binder: amps1
+    bindings:
+      processor-in-0:
+        destination: topic1
+        binder: amps1
+      processor-out-0:
+        destination: topic1
+        binder: amps2
+    binders:
+      amps1:
+        type: amps
+        environment:
+          spring.cloud.stream.amps.binder:
+            name: all-properties
+            brokers:
+              - tcp://instance-1:50000/json
+              - tcp://instance-2:50000/json
+            defaultBrokerMessageType: binary
+            defaultBrokerTransport: https
+            defaultBrokerPort: 10000
+            publishStoreSize: 2048
+            maxReconnectTime: 100s
+            heartBeatInterval: 200s
+            publishMessageStoreProviderBeanName: storeProvider
+            subscriptionBookmarkStoreProviderBeanName: bookmarkProvider
+            publishAmpsHeader: true
+            authenticatorBeanName: authBean
+      amps2:
+        type: amps
+        environment:
+          spring.cloud.stream.amps.binder:
+            name: connection-url
+            brokers:
+              - tcp://instance-1:50000/json
+              - instance-2:50000/json
+              - tcp://instance-1/json
+              - tcp://instance-2:50000
+              - instance-1:50000
+              - instance-2
+            defaultBrokerMessageType: binary
+            defaultBrokerTransport: https
+            defaultBrokerPort: 10000
+  function:
+    definition: processor

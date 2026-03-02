@@ -1,8 +1,8 @@
 # Programming Model
 
-The AMPS binder supports two programming models for producing and consuming messages. The **functional** model (recommended for Spring Cloud Stream 3.x+) and the **annotation-based** model (legacy).
+The AMPS binder supports the **functional** model.
 
-## Functional Programming Model (Recommended)
+## Functional Programming Model
 
 Starting with Spring Cloud Stream 3.x, the recommended approach is to use standard Java functional interfaces (`Consumer`, `Function`, `Supplier`) exposed as Spring beans.
 
@@ -119,151 +119,6 @@ public class MessageProcessor implements Function<Flux<String>, Flux<String>> {
 
 ---
 
-## Annotation-Based Programming Model (Legacy)
-
-!!! warning "Deprecated"
-The annotation-based model (`@EnableBinding`, `@StreamListener`) is deprecated in Spring Cloud Stream 3.x. Use the functional model for new applications.
-
-### Define Channels
-
-Create producer and consumer channel interfaces:
-
-=== "Producer Interface"
-
-    ```java
-    import org.springframework.cloud.stream.annotation.Output;
-    import org.springframework.messaging.MessageChannel;
-
-    public interface Producer {
-
-        String OUTPUT = "output";
-
-        @Output(OUTPUT)
-        MessageChannel output();
-    }
-    ```
-
-=== "Consumer Interface"
-
-    ```java
-    import org.springframework.cloud.stream.annotation.Input;
-    import org.springframework.messaging.SubscribableChannel;
-
-    public interface Consumer {
-
-        String INPUT = "input";
-
-        @Input(INPUT)
-        SubscribableChannel input();
-    }
-    ```
-
-### Register Bindings
-
-Enable bindings in your main application class:
-
-```java
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-
-@SpringBootApplication
-@EnableBinding({Consumer.class, Producer.class})
-public class App {
-
-    public static void main(final String[] args) {
-        SpringApplication.run(App.class, args);
-    }
-}
-```
-
-### Process Messages
-
-Use `@StreamListener` to receive messages and `MessageBuilder` to send them:
-
-```java
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.support.MessageBuilder;
-import org.springframework.stereotype.Component;
-
-@Component
-public class MessageProcessor {
-
-    @Autowired
-    private Producer producer;
-
-    public void sendMessage(Detail detail) {
-        producer.output().send(MessageBuilder.withPayload(detail).build());
-    }
-
-    @StreamListener(Consumer.INPUT)
-    public void listener(Detail dto) {
-        System.out.println("input: " + dto);
-    }
-}
-```
-
-### Receive and Forward
-
-Use `@StreamListener` with `@SendTo` to process and forward messages simultaneously:
-
-```java
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Component;
-
-@Component
-public class MessageProcessor {
-
-    @StreamListener(Consumer.INPUT)
-    @SendTo(Producer.OUTPUT)
-    public Detail process(Detail dto) {
-        System.out.println("process: " + dto);
-        return dto;
-    }
-}
-```
-
-### Reactive Streams (Annotation-Based)
-
-Reactive processing is also supported with the annotation model:
-
-```java
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
-
-@Component
-public class MessageProcessor {
-
-    @StreamListener(Consumer.INPUT)
-    @SendTo(Producer.OUTPUT)
-    public Flux<String> convert(Flux<String> input) {
-        return input.map(String::toUpperCase);
-    }
-}
-```
-
-### Configuration (Annotation-Based)
-
-```yaml
-spring:
-  cloud:
-    stream:
-      amps:
-        binder:
-          brokers: tcp://amps-server:50000/json
-      bindings:
-        output:
-          destination: /topic
-        input:
-          destination: /topic/queue
-```
-
----
-
 ## Destination Naming
 
 AMPS uses topic names as destinations. For queue-based consumption, append the queue name to the topic path:
@@ -297,7 +152,6 @@ Regardless of the programming model, you can access AMPS-specific headers on con
 import org.springframework.messaging.Message;
 import com.findevglobal.cloud.stream.binder.amps.AmpsMessageHeaders;
 
-@StreamListener(Consumer.INPUT)
 public void process(Message<Detail> message) {
     System.out.println("CORRELATION_ID: " +
         message.getHeaders().get(AmpsMessageHeaders.CORRELATION_ID));

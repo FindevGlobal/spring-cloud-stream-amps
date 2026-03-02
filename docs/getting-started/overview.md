@@ -21,21 +21,21 @@ AMPS is a publish-subscribe messaging platform designed for high-throughput, low
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                 Spring Cloud Stream                  │
+│                 Spring Cloud Stream                 │
 │                                                     │
-│   @Bean Consumer<Message<T>>    Function<T, R>     │
+│   @Bean Consumer<Message<T>>    Function<T, R>      │
 │          │                          │               │
 │          ▼                          ▼               │
 │   ┌─────────────────────────────────────────────┐   │
-│   │         Spring Cloud Stream Binder SPI       │   │
+│   │         Spring Cloud Stream Binder SPI      │   │
 │   └──────────────────┬──────────────────────────┘   │
 │                      │                              │
 │   ┌──────────────────▼──────────────────────────┐   │
-│   │       AMPS Binder (this project)             │   │
-│   │                                              │   │
-│   │  AmpsMessageChannelBinder                    │   │
-│   │    ├── AmpsMessageProducer (consumer side)   │   │
-│   │    └── AmpsProducerMessageHandler (pub side) │   │
+│   │       AMPS Binder (this project)            │   │
+│   │                                             │   │
+│   │  AmpsMessageChannelBinder                   │   │
+│   │    ├── AmpsMessageProducer (consumer side)  │   │
+│   │    └── AmpsProducerMessageHandler (pub side)│   │
 │   └──────────────────┬──────────────────────────┘   │
 │                      │                              │
 └──────────────────────┼──────────────────────────────┘
@@ -53,7 +53,7 @@ AMPS is a publish-subscribe messaging platform designed for high-throughput, low
 - **Content filtering** — Apply AMPS filter expressions to subscriptions.
 - **HA Client** — Automatic reconnection and failover across multiple AMPS instances.
 - **Multi-binder support** — Configure multiple named AMPS binders in a single application.
-- **Distributed tracing** — Transparent trace propagation via Spring Cloud Sleuth or OpenTracing.
+- **Distributed tracing** — Transparent trace propagation via Micrometer or OpenTracing.
 - **Custom header propagation** — Encode arbitrary metadata into AMPS correlation IDs.
 - **Concurrent consumers** — Scale consumption with multiple parallel AMPS connections per binding.
 - **Authentication** — Username/password or custom `Authenticator` beans.
@@ -74,5 +74,5 @@ The core binder module. Provides:
 
 An optional add-on module that adds distributed tracing to AMPS messages. It transparently wraps the AMPS connection layer to inject and extract trace context from message headers. Supports:
 
-- **Spring Cloud Sleuth** (B3 propagation)
+- **Micrometer** (B3 propagation)
 - **OpenTracing** (via `GlobalTracer`)

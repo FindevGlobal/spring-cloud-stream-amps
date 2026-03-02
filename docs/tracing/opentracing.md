@@ -7,7 +7,7 @@ The AMPS tracer integrates with the [OpenTracing](https://opentracing.io/) API f
 `OpenTracingAmpsConfiguration` is activated when:
 
 1. The `io.opentracing.util.GlobalTracer` class is on the classpath.
-2. No `AmpsTracer` bean already exists (Sleuth takes precedence via `@ConditionalOnMissingBean`).
+2. No `AmpsTracer` bean already exists (Micrometer takes precedence via `@ConditionalOnMissingBean`).
 
 It creates an `OpenTracingTracer` bean implementing the `AmpsTracer` interface.
 
@@ -19,7 +19,7 @@ Add the tracer dependency and an OpenTracing implementation (e.g., Jaeger):
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-tracer-amps</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
@@ -78,13 +78,13 @@ Errors are automatically tagged on spans with `Tags.ERROR = true`.
 
 ## Priority
 
-If both Spring Cloud Sleuth and OpenTracing are on the classpath, **Sleuth takes precedence**. The `OpenTracingAmpsConfiguration` is annotated with `@ConditionalOnMissingBean(AmpsTracer.class)`, so it only activates when no Sleuth-based `AmpsTracer` is already registered.
+If both Micrometer and OpenTracing are on the classpath, **Micrometer takes precedence**. The `OpenTracingAmpsConfiguration` is annotated with `@ConditionalOnMissingBean(AmpsTracer.class)`, so it only activates when no Micrometer-based `AmpsTracer` is already registered.
 
-To force OpenTracing over Sleuth, disable the Sleuth integration:
+To force OpenTracing over Micrometer, disable the Micrometer integration:
 
 ```yaml
 spring:
-  sleuth:
+  micrometer:
     amps:
       enabled: false
 ```

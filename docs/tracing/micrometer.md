@@ -1,15 +1,13 @@
-# Spring Cloud Sleuth Integration
+# Micrometer Integration
 
-The AMPS tracer integrates with [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth) for distributed tracing using B3 propagation.
+The AMPS tracer integrates with [Micrometer](https://micrometer.io) for distributed tracing using B3 propagation.
 
 ## Auto-Configuration
 
-`SleuthTracingAmpsConfiguration` is activated when:
+`MicrometerTracingAmpsConfiguration` is activated when:
 
-1. Spring Cloud Sleuth's `Tracer` bean is present on the classpath.
-2. The property `spring.sleuth.amps.enabled` is `true` (default).
-
-It creates a `SleuthTracer` bean implementing the `AmpsTracer` interface.
+1. Micrometer's `Tracer` bean is present on the classpath.
+2. The property `spring.micrometer.amps.enabled` is `true` (default).
 
 ## Setup
 
@@ -19,12 +17,12 @@ Add both dependencies:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-tracer-amps</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 
 <dependency>
-    <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-sleuth</artifactId>
+    <groupId>io.micrometer</groupId>
+    <artifactId>micrometer-tracing</artifactId>
 </dependency>
 ```
 
@@ -32,18 +30,18 @@ No additional configuration is needed. The tracer auto-configures itself.
 
 ## Disabling
 
-To disable Sleuth integration for AMPS while keeping Sleuth active for other components:
+To disable Micrometer integration for AMPS while keeping Micrometer active for other components:
 
 ```yaml
 spring:
-  sleuth:
+  micrometer:
     amps:
       enabled: false
 ```
 
 ## Propagation Format
 
-The Sleuth integration uses **B3 propagation** headers:
+The Micrometer integration uses **B3 propagation** headers:
 
 | Header              | Description                        |
 | ------------------- | ---------------------------------- |
@@ -56,7 +54,7 @@ These headers are injected into the `ampsMessageHeaderParams` map and encoded in
 
 ## Span Details
 
-The `SleuthTracer` creates spans using Sleuth's `Tracer` and `Propagator` APIs:
+The `MicrometerTracer` creates spans using Micrometer's `Tracer` and `Propagator` APIs:
 
 ### Consumer Span
 
@@ -78,7 +76,7 @@ Tags:
 
 ## Documented Spans
 
-The module defines documented spans in the `AmpsSpan` enum for Sleuth's span documentation:
+The module defines documented spans for Micrometer's span documentation:
 
 | Span Name       | Kind       | Tag          |
 | --------------- | ---------- | ------------ |
@@ -90,7 +88,7 @@ The module defines documented spans in the `AmpsSpan` enum for Sleuth's span doc
 ```
 Service A (Producer)                    Service B (Consumer)
 ┌─────────────────────┐                ┌─────────────────────┐
-│ amps.produce span   │──── AMPS ────→│ amps.consume span   │
+│ amps.produce span   │──── AMPS ────→ │ amps.consume span   │
 │ traceId: abc123     │   message      │ traceId: abc123     │
 │ spanId:  def456     │   with B3      │ parentSpanId: def456│
 │ topic:   orders     │   headers      │ topic:   orders     │

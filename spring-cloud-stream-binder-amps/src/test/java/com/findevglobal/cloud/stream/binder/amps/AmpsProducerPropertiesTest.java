@@ -2,7 +2,6 @@ package com.findevglobal.cloud.stream.binder.amps;
 
 import com.crankuptheamps.client.Command;
 import com.crankuptheamps.client.Message;
-import com.findevglobal.cloud.stream.binder.amps.app.Producer;
 import com.findevglobal.cloud.stream.binder.amps.app.TestAmpsConnectionFactoryProvider;
 import com.findevglobal.cloud.stream.binder.amps.app.TestApp;
 import org.junit.jupiter.api.Assertions;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,17 +24,17 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TestApp.class)
 @ActiveProfiles("amps-producer-test")
-@EnableBinding({Producer.class})
 public class AmpsProducerPropertiesTest {
     @Autowired
     private TestAmpsConnectionFactoryProvider ampsConnectionFactoryProvider;
 
     @Autowired
-    private Producer producer;
+    private StreamBridge streamBridge;
 
     @Test
     public void checkSendMessage() {
-        producer.output3().send(
+        streamBridge.send(
+                "output3",
                 MessageBuilder.withPayload("TEST").build()
         );
         Command command = getPublishCommand("topic3");

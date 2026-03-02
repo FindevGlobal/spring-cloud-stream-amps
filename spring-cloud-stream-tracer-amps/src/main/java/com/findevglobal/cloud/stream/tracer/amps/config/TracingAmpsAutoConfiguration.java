@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 @AutoConfiguration
-@AutoConfigureAfter(SleuthTracingAmpsConfiguration.class)
-@Import({SleuthTracingAmpsConfiguration.class, OpenTracingAmpsConfiguration.class})
+@AutoConfigureAfter(MicrometerTracingAmpsConfiguration.class)
+@Import({MicrometerTracingAmpsConfiguration.class, OpenTracingAmpsConfiguration.class})
 public class TracingAmpsAutoConfiguration {
 
     @Bean

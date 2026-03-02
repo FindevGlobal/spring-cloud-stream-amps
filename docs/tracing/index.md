@@ -28,7 +28,7 @@ A `BeanPostProcessor` (`TracingAmpsConnectionFactoryProviderBeanPostProcessor`) 
 When a message is published:
 
 1. A **producer span** is created.
-2. Trace headers (e.g., B3 headers for Sleuth) are injected into the `ampsMessageHeaderParams` map.
+2. Trace headers (e.g., B3 headers for Micrometer) are injected into the `ampsMessageHeaderParams` map.
 3. The `ampsPublishHeader` flag is forced to `true` so the header converter encodes trace context into the AMPS correlation ID.
 4. The message is published with the trace context embedded.
 5. The span is closed.
@@ -52,18 +52,18 @@ Add the tracer module to your project:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-tracer-amps</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ```
 
 ## Supported Tracing Libraries
 
-| Library                          | Auto-Configuration               | Priority                       |
-| -------------------------------- | -------------------------------- | ------------------------------ |
-| [Spring Cloud Sleuth](sleuth.md) | `SleuthTracingAmpsConfiguration` | **Primary** (takes precedence) |
-| [OpenTracing](opentracing.md)    | `OpenTracingAmpsConfiguration`   | Secondary (fallback)           |
+| Library                       | Auto-Configuration                   | Priority                       |
+|-------------------------------|--------------------------------------| ------------------------------ |
+| [Micrometer](micrometer.md)   | `MicrometerTracingAmpsConfiguration` | **Primary** (takes precedence) |
+| [OpenTracing](opentracing.md) | `OpenTracingAmpsConfiguration`       | Secondary (fallback)           |
 
-If both Sleuth and OpenTracing are on the classpath, Sleuth takes precedence via `@ConditionalOnMissingBean`.
+If both Micrometer and OpenTracing are on the classpath, Micrometer takes precedence via `@ConditionalOnMissingBean`.
 
 ## Span Details
 
