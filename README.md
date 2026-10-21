@@ -15,8 +15,8 @@ This binder allows Spring Cloud Stream applications to use AMPS as their messagi
 
 | Dependency   | Version                |
 | ------------ |------------------------|
-| Spring Boot  | 3.5.x                  |
-| Spring Cloud | 2025.0.x (Northfields) |
+| Spring Boot  | 4.1.x                  |
+| Spring Cloud | 2025.1.x (Oakwood)     |
 | AMPS Client  | 5.3.4.0                |
 | Java         | 17+                    |
 
@@ -28,7 +28,7 @@ Add the binder dependency:
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-binder-amps</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 </dependency>
 ```
 

@@ -17,12 +17,12 @@ The project consists of two modules:
 
 ## Compatibility
 
-| Dependency   | Version                |
-| ------------ |------------------------|
-| Spring Boot  | 3.5.x                  |
-| Spring Cloud | 2025.0.x (Northfields) |
-| AMPS Client  | 5.3.4.0                |
-| Java         | 17+                    |
+| Dependency   | Version                 |
+| ------------ |-------------------------|
+| Spring Boot  | 4.1.x                   |
+| Spring Cloud | 2025.1.x (Oakwood)      |
+| AMPS Client  | 5.3.4.0                 |
+| Java         | 17+                     |
 
 ## Quick Links
 

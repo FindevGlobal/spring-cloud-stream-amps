@@ -1,13 +1,13 @@
 package com.findevglobal.cloud.stream.binder.amps.integration.function;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.findevglobal.cloud.stream.binder.amps.integration.Dto;
 import com.findevglobal.cloud.stream.binder.amps.integration.Inputs;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.jackson.autoconfigure.JsonMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.DeserializationFeature;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -20,8 +20,8 @@ public class TestFunctionApp {
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
-        return new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    public JsonMapperBuilderCustomizer jsonCustomizer() {
+        return builder -> builder.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     }
 
     @Bean
