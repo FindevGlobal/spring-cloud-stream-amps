@@ -68,7 +68,9 @@ public class AmpsMessageChannelBinder
                                                           ExtendedProducerProperties<AmpsProducerProperties>
                                                                   producerProperties,
                                                           MessageChannel errorChannel) {
-        return new AmpsProducerMessageHandler(ampsConnectionFactory, destination, producerProperties);
+        AmpsProducerMessageHandler ampsProducerMessageHandler = new AmpsProducerMessageHandler(ampsConnectionFactory, destination, producerProperties);
+        ampsProducerMessageHandler.setBeanFactory(getBeanFactory());
+        return ampsProducerMessageHandler;
     }
 
     @Override
@@ -78,6 +80,7 @@ public class AmpsMessageChannelBinder
                                                                  properties) {
         AmpsMessageProducer ampsMessageProducer = new AmpsMessageProducer(
                 ampsConnectionFactory, destination, properties);
+        ampsMessageProducer.setBeanFactory(getBeanFactory());
         ampsMessageProducer.setApplicationContext(getApplicationContext());
         return ampsMessageProducer;
     }

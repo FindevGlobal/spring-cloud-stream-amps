@@ -1,12 +1,12 @@
 package com.findevglobal.cloud.stream.binder.amps.connection.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.findevglobal.cloud.stream.binder.amps.AmpsMessageHeaders;
 import com.findevglobal.cloud.stream.binder.amps.connection.AmpsHeaderConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.MessageHeaders;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -18,7 +18,7 @@ public class AmpsHeaderConverterImpl implements AmpsHeaderConverter {
 
     private final Logger log = LoggerFactory.getLogger(AmpsHeaderConverterImpl.class);
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final JsonMapper jsonMapper = new JsonMapper();
 
     /**
      * {@inheritDoc}
@@ -44,7 +44,7 @@ public class AmpsHeaderConverterImpl implements AmpsHeaderConverter {
         );
         String correlationId = null;
         try {
-            correlationId = objectMapper.writeValueAsString(headerParams);
+            correlationId = jsonMapper.writeValueAsString(headerParams);
         } catch (Exception e) {
             log.error("Error when converting headers to string: {}", headerParams, e);
         }
@@ -60,7 +60,7 @@ public class AmpsHeaderConverterImpl implements AmpsHeaderConverter {
         }
         try {
             String decodedCorrelationId = new String(Base64.getDecoder().decode(correlationId), StandardCharsets.UTF_8);
-            Map<String, String> headerParams = objectMapper.readValue(decodedCorrelationId,  new TypeReference<Map<String, String>>() {});
+            Map<String, String> headerParams = jsonMapper.readValue(decodedCorrelationId,  new TypeReference<Map<String, String>>() {});
             Map<String, Object> messageHeaders = new HashMap<>();
             String messageContentType = headerParams.remove(AmpsMessageHeaders.MESSAGE_CONTENT_TYPE);
             if (messageContentType != null) {

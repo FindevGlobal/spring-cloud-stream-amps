@@ -1,13 +1,13 @@
 package com.findevglobal.cloud.stream.binder.amps.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.findevglobal.cloud.stream.binder.amps.AmpsMessageHeaders;
 import com.findevglobal.cloud.stream.binder.amps.connection.impl.AmpsHeaderConverterImpl;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.messaging.MessageHeaders;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -19,7 +19,7 @@ import static java.util.Collections.singletonMap;
 
 public class AmpsHeaderConverterImplTest {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final JsonMapper jsonMapper = new JsonMapper();
 
     private final AmpsHeaderConverterImpl converter = new AmpsHeaderConverterImpl();
 
@@ -120,7 +120,7 @@ public class AmpsHeaderConverterImplTest {
     private @Nullable Map<String, String> decodeToMap(final String correlationId) {
         try {
             String decodedJson = new String(Base64.getDecoder().decode(correlationId), StandardCharsets.UTF_8);
-            return objectMapper.readValue(decodedJson, new TypeReference<Map<String, String>>() {});
+            return jsonMapper.readValue(decodedJson, new TypeReference<Map<String, String>>() {});
         } catch (Exception e) {
             Assertions.fail("Failed to decode correlation ID: " + e.getMessage());
             return null;
@@ -136,7 +136,7 @@ public class AmpsHeaderConverterImplTest {
         headerParams.put(AmpsMessageHeaders.MESSAGE_VERSION, "1.0");
         headerParams.put("CUSTOM_HEADER", "CUSTOM_VALUE");
         String correlationId = Base64.getEncoder().encodeToString(
-                objectMapper.writeValueAsString(headerParams).getBytes(StandardCharsets.UTF_8));
+                jsonMapper.writeValueAsString(headerParams).getBytes(StandardCharsets.UTF_8));
 
         // Act
         MessageHeaders messageHeaders = converter.toMessageHeaders(correlationId);

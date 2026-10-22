@@ -16,7 +16,7 @@ The simplest way to get started is to add the AMPS binder directly, which includ
 <dependency>
     <groupId>com.findevglobal.cloud</groupId>
     <artifactId>spring-cloud-stream-binder-amps</artifactId>
-    <version>1.1.0-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -37,7 +37,7 @@ And, if using Spring Cloud BOM:
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
-            <version>2025.0.1</version>
+            <version>2025.1.3</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
